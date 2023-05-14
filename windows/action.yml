@@ -1,0 +1,23 @@
+name: 'Fyne Build Windows'
+description: 'Build a Fyne application targetting Windows'
+runs:
+  using: "composite"
+  steps:
+      - name: Install native deps
+        run: |
+          choco install msys2
+        shell: pwsh
+      - name: Install Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: 'stable'
+      - name: Install Fyne CLI
+        run: |
+          go install fyne.io/fyne/v2/cmd/fyne@latest
+          Start-Process -PSPath "$HOME\go\bin\fyne.exe" -ArgumentList "version" -NoNewWindow -Wait
+        shell: pwsh
+      - name: Fyne Package
+        run: |
+          go generate -v
+          Start-Process -PSPath "$HOME\go\bin\fyne.exe" -ArgumentList "package" -NoNewWindow -Wait
+        shell: pwsh
