@@ -1,0 +1,22 @@
+name: 'Fyne Build Linux'
+description: 'Build a Fyne application targetting Linux'
+runs:
+  using: "composite"
+  steps:
+    - name: Install native deps
+      run: |
+        sudo apt update
+        sudo apt install gcc libgl1-mesa-dev xorg-dev -y
+    - name: Install Go
+      uses: actions/setup-go@v4
+      with:
+        go-version: 'stable'
+    - name: Install Fyne CLI
+      run: |
+        go install fyne.io/fyne/v2/cmd/fyne@latest
+        $HOME/go/bin/fyne version
+    - name: Fyne Package
+      run: |
+        go generate -v
+        $HOME/go/bin/fyne package
+        fyne build
