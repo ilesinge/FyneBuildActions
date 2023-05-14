@@ -7,6 +7,7 @@ runs:
       run: |
         sudo apt update
         sudo apt install gcc libgl1-mesa-dev xorg-dev -y
+      shell: bash
     - name: Install Go
       uses: actions/setup-go@v4
       with:
@@ -15,8 +16,10 @@ runs:
       run: |
         go install fyne.io/fyne/v2/cmd/fyne@latest
         $HOME/go/bin/fyne version
+      shell: bash
     - name: Fyne Package
       run: |
         go generate -v
         $HOME/go/bin/fyne package
         fyne build
+      shell: bash
