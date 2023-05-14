@@ -1,0 +1,19 @@
+name: 'Fyne Build MacOS'
+description: 'Build a Fyne application targetting MacOS'
+runs:
+  using: "composite"
+  steps:
+      - name: Install Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: 'stable'
+      - name: Install Fyne CLI
+        run: |
+          go install fyne.io/fyne/v2/cmd/fyne@latest
+          $HOME/go/bin/fyne version
+        shell: bash
+      - name: Fyne Package
+        run: |
+          go generate -v
+          $HOME/go/bin/fyne package
+        shell: bash
